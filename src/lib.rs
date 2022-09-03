@@ -1,3 +1,9 @@
+#![crate_name = "process"]
+
+//! The `process` crate provides a convenient way to set up processing
+//! pipelines for large amount of data.
+//!
+
 use anyhow::{Context, Result};
 use log::{info, warn};
 use rayon::prelude::*;
