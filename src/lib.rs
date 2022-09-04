@@ -11,6 +11,8 @@ use std::ffi::OsStr;
 use std::path::PathBuf;
 use std::{fs, io};
 
+/// An item.
+/// 
 #[derive(Debug)]
 pub struct Item {
     pub name: String,
@@ -18,6 +20,8 @@ pub struct Item {
     pub output_item_path: PathBuf,
 }
 
+/// A process.
+/// 
 #[derive(Debug)]
 pub struct Process {
     pub name: String,
@@ -29,6 +33,8 @@ pub struct Process {
     pub items: Vec<Item>,
 }
 
+/// Processing trait.
+/// 
 pub trait ProcessingCore {
     fn set_items(self: &mut Self) -> Result<()>;
     fn check_all_inputs_exist(self: &Self) -> Result<bool>;
