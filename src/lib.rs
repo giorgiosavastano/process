@@ -1,7 +1,7 @@
-#![crate_name = "process"]
+#![crate_name = "processing_chain"]
 
-//! The `process` crate provides a convenient way to set up processing
-//! pipelines for large amount of data.
+//! The `processing-chain` crate provides a convenient way to seamlessly set up processing
+//! chains for large amount of data.
 //!
 
 use anyhow::{Context, Result};
