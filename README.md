@@ -40,4 +40,4 @@ fn _process_item(item: &Item) -> Result<bool> {
     Ok(true)
 }
 ```
-The full example can be found [`here`](https://github.com/nsat/processing-chain/blob/main/examples/processing.rs).
+The full example can be found [`here`](https://github.com/giorgiosavastano/process/blob/main/examples/processing.rs).
