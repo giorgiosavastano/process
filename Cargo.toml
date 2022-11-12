@@ -1,16 +1,16 @@
 [package]
 
 name = "processing_chain"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
-description = "Rust library to set up processing chains of large amount of files."
+description = "Rust library to set up processing chains of large amounts of data."
 authors = [
   "Giorgio Savastano"
 ]
 license = "MIT"
 readme = "README.md"
 
-repository = "https://github.com/giorgiosavastano/process/"
+repository = "https://github.com/nsat/processing-chain"
 
 keywords = ["process", "data", "parallel", "data-structure", "processing-chain"]
 categories = ["data-structures", "science"]
@@ -23,4 +23,5 @@ anyhow = "1.0.63"
 log = "0.4.17"
 env_logger = "0.9.0"
 rayon = "1.5.3"
+indicatif = {version = "0.17.0", features = ["rayon"]}
 

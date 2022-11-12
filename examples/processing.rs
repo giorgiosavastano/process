@@ -1,7 +1,7 @@
-use processing_chain::{Process, ProcessingCore, Item};
-use std::path::PathBuf;
 use anyhow::{Ok, Result};
-
+use processing_chain::{run_process, Item, Process};
+use std::env;
+use std::path::PathBuf;
 
 fn _process_item(item: &Item) -> Result<bool> {
     // define how to process a single item
@@ -15,29 +15,13 @@ fn _process_item(item: &Item) -> Result<bool> {
 }
 
 fn main() -> Result<()> {
-
-    let mut proc = Process {
+    let proc = Process {
         name: String::from("Test"),
-        inputs_dir_path: PathBuf::from("Test"),
-        inputs_extenion: String::from("Test"),
+        inputs_dir_path: env::current_dir()?,
+        inputs_extenion: String::from("toml"),
         outputs_dir_path: PathBuf::from("Test"),
-        tmp_dir_path: PathBuf::from("Test"),
-        overwrite: false,
-        items: Vec::new(),
+        ..Process::default()
     };
-
-    proc.set_items()?;
-
-    if proc.check_all_inputs_exist()? {
-        println!("All good!");
-    }
-
-    if proc.tmp_dir_path.to_str() != Some("default") {
-        proc.create_tmp_directory()?;
-    }
-
-    if proc.process_items(_process_item)? {
-        println!(" Daje!")
-    }
+    let _proc = run_process(proc, _process_item)?;
     Ok(())
 }
