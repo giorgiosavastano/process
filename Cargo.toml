@@ -10,7 +10,7 @@ authors = [
 license = "MIT"
 readme = "README.md"
 
-repository = "https://github.com/nsat/processing-chain"
+repository = "https://github.com/giorgiosavastano/process"
 
 keywords = ["process", "data", "parallel", "data-structure", "processing-chain"]
 categories = ["data-structures", "science"]
