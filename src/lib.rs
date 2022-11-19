@@ -105,7 +105,7 @@ impl ProcessingCore for Process {
     }
 
     fn create_tmp_directory(&self) -> Result<()> {
-        fs::create_dir_all(&self.tmp_dir_path.as_ref().context("as_ref() failed")?).with_context(
+        fs::create_dir_all(self.tmp_dir_path.as_ref().context("as_ref() failed")?).with_context(
             || {
                 format!(
                     "could not create temporary directory `{}`",
