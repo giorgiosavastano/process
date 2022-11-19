@@ -11,6 +11,7 @@ use rayon::prelude::*;
 use std::ffi::OsStr;
 use std::path::PathBuf;
 use std::{fs, io};
+use std::iter::{zip};
 
 /// An item.
 ///
@@ -96,7 +97,7 @@ impl ProcessingCore for Process {
     fn check_all_inputs_exist(&self) -> Result<bool> {
         let mut test = true;
         for f in self.items.iter() {
-            for i in f.input_item_paths {
+            for i in f.input_item_paths.iter() {
                 test = test && i.exists();
             }
         }
@@ -142,18 +143,22 @@ impl ProcessingCore for Process {
     fn move_files(&self) -> Result<bool> {
         for i in self.items.iter() {
 
-            let res = i.tmp_item_paths.unwrap().as_ref().iter()
-            .zip(i.output_item_paths.iter())
-            .for_each(|(x, y)| { fs::rename(
-                &x,
-                    &y,); }
-                            );
+            let tmp_paths = i.tmp_item_paths.as_ref().unwrap();
 
-            // Zip::from(i.tmp_item_paths)
-            //     .and(i.output_item_paths)
-            //     .par_for_each(|x, y| fs::rename(
-            //                         x.as_ref().context("as_ref() failed")?,
-            //                         &y,)?;
+            let iter = zip(tmp_paths, &i.output_item_paths);
+
+            for (p1, p2 )in iter {
+                fs::rename(p1, p2)?;
+            }
+
+
+
+            // Zip::from(i.tmp_item_paths.unwrap().iter())
+            // .and(i.output_item_paths.par_iter())
+            //     .for_each(|(x, y)| { fs::rename(
+            //                         x,
+            //                         y,).unwrap();}
+            //                     );
             }
         Ok(true)
     }
@@ -193,7 +198,7 @@ mod tests {
         // define how to process a single item
         info!(
             "Processing {} {:?} -> {:?}",
-            item.name, item.input_item_path, item.output_item_path
+            item.name, item.input_item_paths, item.output_item_paths
         );
         Ok(true)
     }
@@ -226,11 +231,11 @@ mod tests {
         let first_item = proc.items.first().unwrap();
         assert_eq!(first_item.name, "file_0");
         assert_eq!(
-            first_item.input_item_path.file_name().unwrap(),
+            first_item.input_item_paths.first().unwrap().file_name().unwrap(),
             "Cargo.toml"
         );
-        assert_eq!(first_item.input_item_path.extension().unwrap(), "toml");
-        assert_eq!(first_item.output_item_path.extension().unwrap(), "toml");
+        assert_eq!(first_item.input_item_paths.first().unwrap().extension().unwrap(), "toml");
+        assert_eq!(first_item.output_item_paths.first().unwrap().extension().unwrap(), "toml");
     }
 
     #[test]

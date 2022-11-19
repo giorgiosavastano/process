@@ -7,7 +7,7 @@ fn _process_item(item: &Item) -> Result<bool> {
     // define how to process a single item
     println!(
         "Processing {} {:?} -> {:?}",
-        item.name, item.input_item_path, item.output_item_path
+        item.name, item.input_item_paths, item.output_item_paths
     );
     // ...
 
