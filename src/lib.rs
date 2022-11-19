@@ -17,9 +17,9 @@ use std::{fs, io};
 #[derive(Debug)]
 pub struct Item {
     pub name: String,
-    pub input_item_path: PathBuf,
-    pub output_item_path: PathBuf,
-    pub tmp_item_path: Option<PathBuf>,
+    pub input_item_paths: Vec<PathBuf>,
+    pub output_item_paths: Vec<PathBuf>,
+    pub tmp_item_paths: Option<Vec<PathBuf>>,
 }
 
 /// A process.
@@ -81,9 +81,9 @@ impl ProcessingCore for Process {
 
                 let it = Item {
                     name: format!("file_{}", i),
-                    input_item_path: e.to_path_buf(),
-                    output_item_path,
-                    tmp_item_path: Some(tmp_item_path),
+                    input_item_paths: vec![e.to_path_buf()],
+                    output_item_paths: vec![output_item_path],
+                    tmp_item_paths: Some(vec![tmp_item_path]),
                 };
                 i += 1;
                 items.push(it)
@@ -96,7 +96,9 @@ impl ProcessingCore for Process {
     fn check_all_inputs_exist(&self) -> Result<bool> {
         let mut test = true;
         for f in self.items.iter() {
-            test = test && f.input_item_path.exists();
+            for i in f.input_item_paths {
+                test = test && i.exists();
+            }
         }
         Ok(test)
     }
@@ -139,11 +141,20 @@ impl ProcessingCore for Process {
 
     fn move_files(&self) -> Result<bool> {
         for i in self.items.iter() {
-            fs::rename(
-                i.tmp_item_path.as_ref().context("as_ref() failed")?,
-                &i.output_item_path,
-            )?;
-        }
+
+            let res = i.tmp_item_paths.unwrap().as_ref().iter()
+            .zip(i.output_item_paths.iter())
+            .for_each(|(x, y)| { fs::rename(
+                &x,
+                    &y,); }
+                            );
+
+            // Zip::from(i.tmp_item_paths)
+            //     .and(i.output_item_paths)
+            //     .par_for_each(|x, y| fs::rename(
+            //                         x.as_ref().context("as_ref() failed")?,
+            //                         &y,)?;
+            }
         Ok(true)
     }
 }
