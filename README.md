@@ -1,10 +1,10 @@
 # processing-chain
 
 `processing-chain` provides a convenient way to seamlessly set up processing
-chains for large amounts of data.
+chains for large amounts of data. `processing-chain` introduces the concept of Item. An Item is an abstraction that is used to spawn all the processes in parallel. At the moment, an Item is defined by a single input path and a single output path. We are currently working on extending this concept to allow parallelization by ouput files [`link`](https://github.com/giorgiosavastano/process/issues/1).
 
 All the user needs to do is to provide the input/output paths, and the function that processes a single file.
-`processing-chain` will take care of spawning the process across all files via parallelization.
+`processing-chain` will take care of spawning the process across all Items via parallelization.
 The user can also provide some extra processing configuration information (e.g., overwrite).
 
 ## Highlights
