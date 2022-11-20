@@ -6,9 +6,9 @@ chains for large amounts of data.
 Please read the [`API documentation on docs.rs`](https://docs.rs/processing_chain/latest/processing_chain/)
 or take a look at the [`examples`](https://github.com/giorgiosavastano/process/tree/main/examples).
 
-`processing-chain` is based on the concept of Item which is an abstraction that is used to spawn all the processes in parallel. All the user needs to do is to define:
+`processing-chain` is based on the concept of Item which is an abstraction that is used to spawn all the processes in parallel. All the user needs to do is define:
 
-- The Items to be process
+- The Items to be processed
 - The function that processes a single Item
 
 `processing-chain` will take care of spawning the process across all Items via parallelization.
