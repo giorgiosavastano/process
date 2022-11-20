@@ -42,7 +42,7 @@ where
 mod tests {
     use super::*;
     use std::env;
-    use log::{info};
+    use log::info;
     use std::path::PathBuf;
     use processes::Process;
 

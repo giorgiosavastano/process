@@ -6,12 +6,22 @@
     },
     {
         "name": "item_2",
-        "input_item_paths": ["test_1.npy", "test_2.npy", "test_2.npy"],
+        "input_item_paths": ["test_1.npy", "test_2.npy"],
         "output_item_paths": ["output_2.nc"]
     },
     {
         "name": "item_3",
-        "input_item_paths": ["test_1.npy", "test_2.npy", "test_2.npy"],
+        "input_item_paths": ["test_6.npy", "test_7.npy", "test_8.npy"],
         "output_item_paths": ["output_3.nc"]
+    },
+    {
+        "name": "item_4",
+        "input_item_paths": ["test_11.npy", "test_21.npy", "test_21.npy"],
+        "output_item_paths": ["output_4.nc"]
+    },
+    {
+        "name": "item_5",
+        "input_item_paths": ["test_12.npy", "test_22.npy", "test_22.npy"],
+        "output_item_paths": ["output_5.nc"]
     }
 ]
