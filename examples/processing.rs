@@ -1,5 +1,5 @@
 use anyhow::{Ok, Result};
-use processing_chain::{run_process, Item, Process};
+use processing_chain::{run_process, items::Item, processes::simple_process::Process};
 use std::env;
 use std::path::PathBuf;
 
