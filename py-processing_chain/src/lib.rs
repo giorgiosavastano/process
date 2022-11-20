@@ -1,9 +1,13 @@
-use processing_chain::run_process_json;
 use pyo3::prelude::*;
+// use processing_chain::items::Item;
 
-/// Formats the sum of two numbers as string.
+extern crate processing_chain;
+
+/// Run process in parallel.
 #[pyfunction]
-fn run_process(process_name: str, json_file_path: str, lambda: PyObject) -> PyResult<()> {
+fn run_process(process_name: &str, json_file_path: &str, lambda: PyObject) -> PyResult<()> 
+{
+    // let _pr = processing_chain::run_process_json(process_name.to_string(), json_file_path.to_string(), lambda);
     Ok(())
 }
 
