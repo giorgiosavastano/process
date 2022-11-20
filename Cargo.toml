@@ -24,4 +24,6 @@ log = "0.4.17"
 env_logger = "0.9.3"
 rayon = "1.5.3"
 indicatif = {version = "0.17.2", features = ["rayon"]}
+serde_json = "1.0.88"
+serde = { version = "1.0.147", features = ["derive"] }
 

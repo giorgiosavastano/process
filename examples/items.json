@@ -1,0 +1,17 @@
+[
+    {
+        "name": "item_1",
+        "input_item_paths": ["test_1.npy", "test_2.npy", "test_2.npy"],
+        "output_item_paths": ["output_1.nc"]
+    },
+    {
+        "name": "item_2",
+        "input_item_paths": ["test_1.npy", "test_2.npy", "test_2.npy"],
+        "output_item_paths": ["output_2.nc"]
+    },
+    {
+        "name": "item_3",
+        "input_item_paths": ["test_1.npy", "test_2.npy", "test_2.npy"],
+        "output_item_paths": ["output_3.nc"]
+    }
+]
