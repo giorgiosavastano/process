@@ -1,60 +1,32 @@
 use anyhow::{Context, Result};
-use std::ffi::OsStr;
-use std::path::PathBuf;
-use std::{fs, io};
+use std::fs::File;
+use std::io::BufReader;
+use std::fs;
 use log::{info, warn};
 use rayon::prelude::*;
 use indicatif::ParallelProgressIterator;
-use std::iter::{zip};
+use std::iter::zip;
 
 use crate::{process_trait::ProcessingCore, items::Item};
-pub use super::Process;
+pub use super::JsonProcess;
 
 
-impl ProcessingCore for Process {
+impl ProcessingCore for JsonProcess {
     fn set_items(&mut self) -> Result<()> {
-        let entries = fs::read_dir(&self.inputs_dir_path)?
-            .map(|res| res.map(|e| e.path()))
-            .collect::<Result<Vec<_>, io::Error>>()?;
 
-        let mut items: Vec<Item> = Vec::new();
-        let mut i = 0;
-        for e in entries.into_iter() {
-            if e.extension().unwrap_or_else(|| OsStr::new("")) == OsStr::new(&self.inputs_extenion)
-            {
-                let file_name = e.file_name().context("file_name() failed")?;
-                let mut output_item_path = PathBuf::new();
-                let mut tmp_item_path = PathBuf::new();
+        // Open the file in read-only mode with buffer.
+        let file = File::open(&self.json_items)?;
+        let reader = BufReader::new(file);
 
-                if self.tmp_dir_path.is_some() {
-                    tmp_item_path.push(
-                        self.tmp_dir_path
-                            .as_ref()
-                            .context("as_ref() failed")?
-                            .to_path_buf()
-                            .join(file_name),
-                    );
-                    output_item_path.push(self.outputs_dir_path.to_path_buf().join(file_name));
-                } else {
-                    output_item_path.push(self.outputs_dir_path.to_path_buf().join(file_name));
-                }
+        let items: Vec<Item> = serde_json::from_reader(reader)
+        .expect("error while reading or parsing the json_items file");
 
-                if !self.overwrite && output_item_path.exists() {
-                    continue;
-                }
-
-                let it = Item {
-                    name: format!("file_{}", i),
-                    input_item_paths: vec![e.to_path_buf()],
-                    output_item_paths: vec![output_item_path],
-                    tmp_item_paths: Some(vec![tmp_item_path]),
-                };
-                i += 1;
-                items.push(it)
-            }
-        }
         self.items = items;
         Ok(())
+    }
+
+    fn check_tmp_dir_exist(&self) -> Result<bool> {
+        Ok(self.tmp_dir_path.is_some())
     }
 
     fn check_all_inputs_exist(&self) -> Result<bool> {
@@ -65,10 +37,6 @@ impl ProcessingCore for Process {
             }
         }
         Ok(test)
-    }
-
-    fn check_tmp_dir_exist(&self) -> Result<bool> {
-        Ok(self.tmp_dir_path.is_some())
     }
 
     fn create_tmp_directory(&self) -> Result<()> {

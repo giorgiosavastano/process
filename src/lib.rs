@@ -7,14 +7,14 @@
 use anyhow::{Ok, Result};
 use process_trait::ProcessingCore;
 use items::Item;
-use processes::Process;
 
 pub mod process_trait;
 pub mod items;
 pub mod processes;
 
-pub fn run_process<F>(mut proc: Process, f: F) -> Result<Process>
+pub fn run_process<P, F>(mut proc: P, f: F) -> Result<P>
 where
+    P: ProcessingCore,
     F: Fn(&Item) -> Result<bool> + Send + Sync,
 {
     proc.set_items()?;
@@ -23,7 +23,7 @@ where
         println!("All good!");
     }
 
-    if proc.tmp_dir_path.is_some() {
+    if proc.check_tmp_dir_exist()? {
         proc.create_tmp_directory()?;
     }
 
@@ -31,7 +31,7 @@ where
         println!("All file processed!");
     }
 
-    if proc.tmp_dir_path.is_some() {
+    if proc.check_tmp_dir_exist()? {
         proc.move_files()?;
     }
 
@@ -44,6 +44,7 @@ mod tests {
     use std::env;
     use log::{info};
     use std::path::PathBuf;
+    use processes::Process;
 
     fn _process_item(item: &Item) -> Result<bool> {
         // define how to process a single item

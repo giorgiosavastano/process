@@ -1,26 +1,29 @@
-use std::fs::File;
-use std::io::BufReader;
-use std::error::Error;
+use anyhow::{Ok, Result};
 
-use processing_chain::{items::Item};
-// use serde_json::from_reader;
+use processing_chain::{run_process, items::Item, processes::json_process::JsonProcess};
 
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn _process_item(item: &Item) -> Result<bool> {
+    // define how to process a single item
+    println!(
+        "Processing {} {:?} -> {:?}",
+        item.name, item.input_item_paths, item.output_item_paths
+    );
+    // ...
 
-    // Open the file in read-only mode with buffer.
-    let file = File::open("examples/items.json")?;
-    let reader = BufReader::new(file);
+    Ok(true)
+}
 
-    let items: Vec<Item> = serde_json::from_reader(reader)
-    .expect("error while reading or parsing");
 
-    for item in items {
-        println!(
-            "Processing {} {:?} -> {:?}",
-            item.name, item.input_item_paths, item.output_item_paths
-        );
-    }
+fn main() -> Result<()> {
+
+    let proc = JsonProcess {
+        name: String::from("JSON process"),
+        json_items: String::from("examples/items.json"),
+        ..JsonProcess::default()
+    };
+    let _proc = run_process(proc, _process_item)?;
+
     Ok(())
 
 }
