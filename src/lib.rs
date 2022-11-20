@@ -45,6 +45,7 @@ mod tests {
     use log::info;
     use std::path::PathBuf;
     use processes::Process;
+    use processes::json_process::JsonProcess;
 
     fn _process_item(item: &Item) -> Result<bool> {
         // define how to process a single item
@@ -103,4 +104,18 @@ mod tests {
         let proc = run_process(proc, _process_item).unwrap();
         assert!(proc.items.is_empty());
     }
+
+    #[test]
+    fn run_process_json() {
+
+        let proc = JsonProcess {
+            name: String::from("JSON process"),
+            json_items: String::from("examples/items.json"),
+            ..JsonProcess::default()
+        };
+        let proc = run_process(proc, _process_item).unwrap();
+        assert_eq!(proc.items.len(), 5);
+
+    }
+
 }
