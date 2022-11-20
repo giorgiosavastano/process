@@ -7,6 +7,7 @@
 use anyhow::{Ok, Result};
 use process_trait::ProcessingCore;
 use items::Item;
+use processes::json_process::JsonProcess;
 
 pub mod process_trait;
 pub mod items;
@@ -36,6 +37,19 @@ where
     }
 
     Ok(proc)
+}
+
+pub fn run_process_json<F>(process_name: String, json_items_path: String, f: F) -> Result<()> 
+where
+    F: Fn(&Item) -> Result<bool> + Send + Sync,
+{
+    let proc = JsonProcess {
+        name: process_name,
+        json_items: json_items_path,
+        ..JsonProcess::default()
+    };
+    let _proc = run_process(proc, f)?;
+    Ok(())
 }
 
 #[cfg(test)]
