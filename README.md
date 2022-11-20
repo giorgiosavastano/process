@@ -1,9 +1,12 @@
 # processing-chain
 
 `processing-chain` provides a convenient way to seamlessly set up processing
-chains for large amounts of data. `processing-chain` is based on the concept of Item. An Item is an abstraction that is used to spawn all the processes in parallel.
+chains for large amounts of data.
 
-All the user needs to do is to define:
+Please read the [`API documentation on docs.rs`] (https://docs.rs/processing_chain/latest/processing_chain/)
+or take a look at the [`examples`](https://github.com/giorgiosavastano/process/tree/main/examples).
+
+`processing-chain` is based on the concept of Item which is an abstraction that is used to spawn all the processes in parallel. All the user needs to do is to define:
 
 - The Items to be process
 - The function that processes a single Item
@@ -67,4 +70,4 @@ fn _process_item(item: &Item) -> Result<bool> {
     Ok(true)
 }
 ```
-The full example can be found [`here`](https://github.com/giorgiosavastano/process/blob/main/examples/processing.rs).
+Some examples can be found [`here`](https://github.com/giorgiosavastano/process/blob/main/examples).
