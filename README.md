@@ -3,7 +3,7 @@
 `processing-chain` provides a convenient way to seamlessly set up processing
 chains for large amounts of data.
 
-Please read the API [`documentation`] (https://docs.rs/processing_chain/latest/processing_chain/)
+Please read the [`API documentation on docs.rs`](https://docs.rs/processing_chain/latest/processing_chain/)
 or take a look at the [`examples`](https://github.com/giorgiosavastano/process/tree/main/examples).
 
 `processing-chain` is based on the concept of Item which is an abstraction that is used to spawn all the processes in parallel. All the user needs to do is to define:
