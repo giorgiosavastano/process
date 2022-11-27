@@ -10,18 +10,30 @@ use std::iter::zip;
 use crate::{process_trait::ProcessingCore, items::Item};
 pub use super::JsonProcess;
 
-
+/// Implementation of the ProcessingCore trait for JsonProcess.
+///
 impl ProcessingCore for JsonProcess {
+    /// Set the Items by parsing the JSON file.
+    /// This method also remove input paths that do not exist.
+    /// 
     fn set_items(&mut self) -> Result<()> {
 
         // Open the file in read-only mode with buffer.
         let file = File::open(&self.json_items)?;
         let reader = BufReader::new(file);
 
-        let items: Vec<Item> = serde_json::from_reader(reader)
+        let mut items: Vec<Item> = serde_json::from_reader(reader)
         .expect("error while reading or parsing the json_items file");
 
+        for f in items.iter_mut() {
+            f.input_item_paths.retain(|x| x.exists());
+            if f.input_item_paths.is_empty() {
+                warn!("Item {} has no valid input paths.", f.name);
+            }
+        }
+
         self.items = items;
+
         Ok(())
     }
 
@@ -52,6 +64,8 @@ impl ProcessingCore for JsonProcess {
         Ok(())
     }
 
+    /// Method that process all the Items.
+    /// 
     fn process_items<F>(&self, f: F) -> Result<bool>
     where
         F: Fn(&Item) -> Result<bool> + Send + Sync,

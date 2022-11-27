@@ -5,6 +5,7 @@
 //!
 
 use anyhow::{Ok, Result};
+use log::{info, error};
 use process_trait::ProcessingCore;
 use items::Item;
 
@@ -19,8 +20,8 @@ where
 {
     proc.set_items()?;
 
-    if proc.check_all_inputs_exist()? {
-        println!("All good!");
+    if !proc.check_all_inputs_exist()? {
+        error!("Not all input files exist!");
     }
 
     if proc.check_tmp_dir_exist()? {
@@ -28,7 +29,7 @@ where
     }
 
     if proc.process_items(f)? {
-        println!("All file processed!");
+        info!("All file processed succesfully!");
     }
 
     if proc.check_tmp_dir_exist()? {

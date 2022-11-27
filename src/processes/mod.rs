@@ -5,7 +5,7 @@ use crate::items::Item;
 pub mod simple_process;
 pub mod json_process;
 
-/// A process.
+/// The Process structure that assume single input/output paths for each Item.
 ///
 #[derive(Debug, Default)]
 pub struct Process {
@@ -19,7 +19,7 @@ pub struct Process {
 }
 
 
-/// The process that parse JSON item file.
+/// The Process structure that parse Items from a JSON file.
 ///
 #[derive(Debug, Default)]
 pub struct JsonProcess {
