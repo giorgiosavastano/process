@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use std::fs::File;
+use std::{fs::File};
 use std::io::BufReader;
 use std::fs;
 use log::{info, warn};
@@ -18,10 +18,15 @@ impl ProcessingCore for JsonProcess {
         let file = File::open(&self.json_items)?;
         let reader = BufReader::new(file);
 
-        let items: Vec<Item> = serde_json::from_reader(reader)
+        let mut items: Vec<Item> = serde_json::from_reader(reader)
         .expect("error while reading or parsing the json_items file");
 
+        for f in items.iter_mut() {
+            f.input_item_paths.retain(|x| x.exists());
+        }
+
         self.items = items;
+
         Ok(())
     }
 
