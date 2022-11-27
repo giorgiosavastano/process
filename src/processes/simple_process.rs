@@ -5,7 +5,7 @@ use std::{fs, io};
 use log::{info, warn};
 use rayon::prelude::*;
 use indicatif::ParallelProgressIterator;
-use std::iter::{zip};
+use std::iter::zip;
 
 use crate::{process_trait::ProcessingCore, items::Item};
 pub use super::Process;
