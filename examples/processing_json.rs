@@ -1,6 +1,6 @@
 use anyhow::{Ok, Result};
 
-use processing_chain::{run_process, items::Item, processes::json_process::JsonProcess};
+use processing_chain::{run_process_json, items::Item};
 
 
 fn _process_item(item: &Item) -> Result<bool> {
@@ -17,14 +17,11 @@ fn _process_item(item: &Item) -> Result<bool> {
 
 fn main() -> Result<()> {
 
-    let proc = JsonProcess {
-        name: String::from("JSON process"),
-        json_items: String::from("examples/items.json"),
-        ..JsonProcess::default()
-    };
-    let _proc = run_process(proc, _process_item)?;
+    let _proc = run_process_json(
+        String::from("JSON process"),
+        String::from("examples/items.json"),
+        _process_item)?;
 
     Ok(())
 
 }
-
