@@ -27,7 +27,7 @@ fn _process_item(item: &mut Item) -> Result<bool> {
         }
     }
 
-    info!("{}: Mean dollar spent {:?}", item.name, results / count);
+    println!("{}: Mean dollar spent {:?}", item.name, results / count);
 
     item.results.push(results / count);
 
@@ -42,7 +42,8 @@ fn main() -> Result<()> {
         json_items: String::from("examples/items.json"),
         ..JsonProcess::default()
     };
-    let _proc = run_process(proc, _process_item)?;
+    let items = run_process(proc, _process_item)?;
+    println!("{:?}", items);
 
     Ok(())
 
