@@ -1,27 +1,26 @@
 [
     {
         "name": "item_1",
-        "input_item_paths": ["test_1.npy", "test_2.npy", "test_2.npy"],
-        "output_item_paths": ["output_1.nc"]
+        "input_item_paths": [
+            "/Users/giorgiosavastano/Develop/test_csv_files/test1.csv",
+            "/Users/giorgiosavastano/Develop/test_csv_files/test2.csv"],
+        "output_item_paths": ["output_1.csv"],
+        "results": []
     },
     {
         "name": "item_2",
-        "input_item_paths": ["test_1.npy", "test_2.npy"],
-        "output_item_paths": ["output_2.nc"]
+        "input_item_paths": [
+            "/Users/giorgiosavastano/Develop/test_csv_files/test3.csv",
+            "/Users/giorgiosavastano/Develop/test_csv_files/test4.csv"],
+        "output_item_paths": ["output_2.csv"],
+        "results": []
     },
     {
         "name": "item_3",
-        "input_item_paths": ["test_6.npy", "test_7.npy", "test_8.npy"],
-        "output_item_paths": ["output_3.nc"]
-    },
-    {
-        "name": "item_4",
-        "input_item_paths": ["test_11.npy", "test_21.npy", "test_21.npy"],
-        "output_item_paths": ["output_4.nc"]
-    },
-    {
-        "name": "item_5",
-        "input_item_paths": ["test_12.npy", "test_22.npy", "test_22.npy"],
-        "output_item_paths": ["output_5.nc"]
+        "input_item_paths": [
+            "/Users/giorgiosavastano/Develop/test_csv_files/test5.csv",
+            "/Users/giorgiosavastano/Develop/test_csv_files/test6.csv"],
+        "output_item_paths": ["output_3.csv"],
+        "results": []
     }
 ]

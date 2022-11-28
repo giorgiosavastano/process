@@ -66,27 +66,24 @@ impl ProcessingCore for JsonProcess {
 
     /// Method that process all the Items.
     /// 
-    fn process_items<F>(&self, f: F) -> Result<bool>
+    fn process_items<F>(&mut self, f: F) -> Result<&Vec<Item>>
     where
-        F: Fn(&Item) -> Result<bool> + Send + Sync,
+        F: Fn(&mut Item) -> Result<bool> + Send + Sync,
     {
         info!("Process name {}", self.name);
 
+        let len_items = self.items.len() as u64;
+
         (self.items)
-            .par_iter()
-            .progress_count(self.items.len() as u64)
+            .par_iter_mut()
+            .progress_count(len_items as u64)
             .for_each(|i| {
-                let fl = f(i)
+                let _fl = f(i)
                     .with_context(|| format!("could not process item `{}`", i.name))
                     .unwrap();
-
-                if !fl {
-                    let warn_description = format!("Process for {} not succesfull.", i.name);
-                    warn!("Warning! {}!", warn_description);
-                }
             });
 
-        Ok(true)
+        Ok(&self.items)
     }
 
     fn move_files(&self) -> Result<bool> {

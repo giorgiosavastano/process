@@ -13,10 +13,10 @@ pub mod process_trait;
 pub mod items;
 pub mod processes;
 
-pub fn run_process<P, F>(mut proc: P, f: F) -> Result<P>
+pub fn run_process<P, F>(mut proc: P, f: F) -> Result<Vec<Item>>
 where
     P: ProcessingCore,
-    F: Fn(&Item) -> Result<bool> + Send + Sync,
+    F: Fn(&mut Item) -> Result<bool> + Send + Sync,
 {
     proc.set_items()?;
 
@@ -28,82 +28,25 @@ where
         proc.create_tmp_directory()?;
     }
 
-    if proc.process_items(f)? {
-        info!("All file processed succesfully!");
-    }
+    let items = proc.process_items(f)?;
+    info!("All Items processed succesfully!");
 
-    if proc.check_tmp_dir_exist()? {
-        proc.move_files()?;
-    }
-
-    Ok(proc)
+    Ok(items.to_vec())
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::env;
     use log::info;
-    use std::path::PathBuf;
-    use processes::Process;
     use processes::json_process::JsonProcess;
 
-    fn _process_item(item: &Item) -> Result<bool> {
+    fn _process_item(item: &mut Item) -> Result<bool> {
         // define how to process a single item
         info!(
             "Processing {} {:?} -> {:?}",
             item.name, item.input_item_paths, item.output_item_paths
         );
         Ok(true)
-    }
-
-    #[test]
-    fn process_default_test() {
-        let proc = Process {
-            name: String::from("Test"),
-            inputs_dir_path: env::current_dir().unwrap(),
-            inputs_extenion: String::from("toml"),
-            ..Process::default()
-        };
-        assert_eq!(proc.overwrite, false);
-        assert_eq!(proc.tmp_dir_path, None);
-        assert_eq!(proc.inputs_extenion, "toml");
-        assert_eq!(proc.outputs_dir_path.to_str().unwrap(), "");
-    }
-
-    #[test]
-    fn run_process_items_test() {
-        let proc = Process {
-            name: String::from("Test"),
-            inputs_dir_path: env::current_dir().unwrap(),
-            inputs_extenion: String::from("toml"),
-            outputs_dir_path: PathBuf::from("Test"),
-            ..Process::default()
-        };
-
-        let proc = run_process(proc, _process_item).unwrap();
-        let first_item = proc.items.first().unwrap();
-        assert_eq!(first_item.name, "file_0");
-        assert_eq!(
-            first_item.input_item_paths.first().unwrap().file_name().unwrap(),
-            "Cargo.toml"
-        );
-        assert_eq!(first_item.input_item_paths.first().unwrap().extension().unwrap(), "toml");
-        assert_eq!(first_item.output_item_paths.first().unwrap().extension().unwrap(), "toml");
-    }
-
-    #[test]
-    fn run_process_empty_items_test() {
-        let proc = Process {
-            name: String::from("Test"),
-            inputs_dir_path: env::current_dir().unwrap(),
-            inputs_extenion: String::from("toml"),
-            outputs_dir_path: env::current_dir().unwrap(),
-            ..Process::default()
-        };
-
-        let proc = run_process(proc, _process_item).unwrap();
-        assert!(proc.items.is_empty());
     }
 
     #[test]
@@ -114,8 +57,8 @@ mod tests {
             json_items: String::from("examples/items.json"),
             ..JsonProcess::default()
         };
-        let proc = run_process(proc, _process_item).unwrap();
-        assert_eq!(proc.items.len(), 5);
+        let items = run_process(proc, _process_item).unwrap();
+        assert_eq!(items.len(), 3);
 
     }
 
