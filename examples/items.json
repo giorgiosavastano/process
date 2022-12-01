@@ -18,8 +18,8 @@
     {
         "name": "item_3",
         "input_item_paths": [
-            "/Users/giorgiosavastano/Develop/test_csv_files/test5.csv",
-            "/Users/giorgiosavastano/Develop/test_csv_files/test6.csv"],
+            "/Users/giorgiosavastano/Develop/test_csv_files/test55.csv",
+            "/Users/giorgiosavastano/Develop/test_csv_files/test66.csv"],
         "output_item_paths": ["output_3.csv"],
         "results": []
     }

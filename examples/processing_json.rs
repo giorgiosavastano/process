@@ -44,6 +44,7 @@ fn main() -> Result<()> {
     };
     let items = run_process(proc, _process_item)?;
     println!("{:?}", items);
+    println!("{:?}", items.iter().next().unwrap().results);
 
     Ok(())
 
