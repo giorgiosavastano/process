@@ -1,5 +1,6 @@
 ![Crates.io](https://img.shields.io/crates/d/processing-chain?style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/giorgiosavastano/process?style=for-the-badge)
+![docs.rs](https://img.shields.io/docsrs/processing_chain/latest?style=for-the-badge)
 
 # processing-chain
 
