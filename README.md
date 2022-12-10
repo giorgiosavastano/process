@@ -1,3 +1,5 @@
+![Crates.io](https://img.shields.io/crates/d/processing-chain?style=for-the-badge)
+
 # processing-chain
 
 `processing-chain` provides a convenient way to seamlessly set up processing
